@@ -23,13 +23,11 @@ const handleRequest = <T extends DefaultBodyType>(
   const delaySeconds = +(req.url.searchParams.get('delaySeconds') ?? '0');
   const responseCode = +(req.url.searchParams.get('responseCode') ?? '200');
 
-  ctx.delay(delaySeconds * 1000);
-
   if (responseCode === 200) {
-    return res(ctx.status(responseCode), ctx.json(successResponse));
+    return res(ctx.delay(delaySeconds * 1000), ctx.status(responseCode), ctx.json(successResponse));
   }
 
-  return res(ctx.status(responseCode));
+  return res(ctx.delay(delaySeconds * 1000), ctx.status(responseCode));
 };
 
 const getEndpointFor = <T extends DefaultBodyType>(path: string, successResponse: T) =>
